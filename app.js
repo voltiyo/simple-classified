@@ -90,6 +90,8 @@ const scriptSrcUrls = [
   "https://kit.fontawesome.com",
   "https://cdnjs.cloudflare.com",
   "https://cdn.jsdelivr.net",
+  "https://www.google.com",
+  "https://www.gstatic.com"
 ];
 const styleSrcUrls = [
   "https://kit-free.fontawesome.com",
@@ -110,7 +112,7 @@ app.use(
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", "blob:"],
-      childSrc: ["blob:"],
+      childSrc: ["blob:", "https://www.google.com", "https://www.gstatic.com"],
       objectSrc: [],
       imgSrc: ["'self'", "blob:", "data:", ClodinaryUrl],
       fontSrc: ["'self'", ...fontSrcUrls],

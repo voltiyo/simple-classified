@@ -6,7 +6,19 @@ module.exports.renderRegister = (req, res) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { email, username, password } = req.body;
+    const { email, username, password, "g-recaptcha-response": token } = req.body;
+    const secretKey = "6LeTZsMqAAAAAP23kvJhgmrL63MwaxxOvs6MbU4k";
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+
+
+    const response = await fetch(verificationUrl, { method: "POST" });
+    const data = await response.json();
+
+    console.log(data.success)
+    if (!data.success){
+      req.flash("error", "Captcha validation failed. Please try again.")
+      return res.redirect("register");
+    }
     const user = new User({ email, username });
     const registeredUser = await User.register(user, password);
     req.login(registeredUser, (err) => {
