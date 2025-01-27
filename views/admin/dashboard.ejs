@@ -1,0 +1,49 @@
+<% layout('layouts/admin')%>
+
+<div class="container">
+    <h1>All Ads</h1>
+  
+    <div class="row">
+      <div class="col-md-8">
+        <% var ads %>
+        <% for (let ad of ads){%>
+        <div class="ad-preview mb-3">
+          <div class="row">
+            <div class="col-md-4">
+              <%if(ad.images.length) {%>
+              <img
+                class="img-fluid"
+                style="height: 150px"
+                src="<%=ad.images[0].url%>"
+              />
+              <% }else {%>
+              <img class="img-fluid" alt="" src="/Images/no-image.png" />
+              <% } %>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title"><%= ad.title %></h5>
+  
+                <p class="card-text">$<%= ad.price %></p>
+                <p class="card-text">
+                  <small class="text-muted"><%= ad.location%></small>
+                </p>
+                <a class="btn btn-primary" href="/ads/<%=ad._id%>"
+                  >More Details
+                </a>
+                <form
+                class="d-inline"
+                action="/admin/ads/delete/<%=ad._id%>"
+                method="POST"
+                >
+                <button class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <% }%>
+      
+    </div>
+  </div>

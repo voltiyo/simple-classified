@@ -14,7 +14,6 @@ module.exports.register = async (req, res, next) => {
     const response = await fetch(verificationUrl, { method: "POST" });
     const data = await response.json();
 
-    console.log(data.success)
     if (!data.success){
       req.flash("error", "Captcha validation failed. Please try again.")
       return res.redirect("register");

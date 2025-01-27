@@ -13,10 +13,12 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
+const Admin = require("./models/admin")
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const adsRoute = require("./routes/ads");
+const AdminRoutes = require("./routes/admin")
 const MongoDBStore = require("connect-mongo")(session);
 const RateLimit = require("express-rate-limit");
 const lusca = require("lusca");
@@ -122,10 +124,14 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
 
+passport.use("user",new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+passport.use("admin", new LocalStrategy(Admin.authenticate()));
+passport.serializeUser(Admin.serializeUser());
+passport.deserializeUser(Admin.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
@@ -136,6 +142,8 @@ app.use((req, res, next) => {
 
 app.use("/", userRoutes);
 app.use("/ads", adsRoute);
+app.use("/admin", AdminRoutes)
+
 
 app.get("/", (req, res) => {
   res.render("home",{

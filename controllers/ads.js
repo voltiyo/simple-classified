@@ -5,6 +5,10 @@ module.exports.index = async (req, res) => {
   const ads = await Ad.find({}).populate("popupText");
   res.render("ads/index", { ads });
 };
+module.exports.ShowAll = async(req,res ) => {
+  const ads = await Ad.find({}).populate("popupText");
+  return ads
+}
 
 module.exports.renderNewForm = (req, res) => {
   res.render("ads/new");
